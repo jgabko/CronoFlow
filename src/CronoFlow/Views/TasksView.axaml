@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TimeFlow.ViewModels"
+             xmlns:models="using:TimeFlow.Models"
+             x:Class="TimeFlow.Views.TasksView"
+             x:DataType="vm:TasksViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="20" Margin="0,0,0,24">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Tarefas" FontSize="24" FontWeight="Bold" Foreground="#263238"/>
+                <Button Grid.Column="1" Content="↻ Atualizar" Command="{Binding RefreshCommand}"
+                        Background="Transparent" Foreground="#03A9F4"/>
+            </Grid>
+
+            <!-- Create task (Manager only) -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000"
+                    IsVisible="{Binding IsManager}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Nova tarefa" FontSize="15" FontWeight="SemiBold" Foreground="#37474F"/>
+                    <TextBox Text="{Binding NewTaskTitle}" PlaceholderText="Título da tarefa" Height="38"/>
+                    <TextBox Text="{Binding NewTaskDescription}" PlaceholderText="Descrição (opcional)" Height="38"/>
+                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedAssignee}"
+                              PlaceholderText="Atribuir a funcionário (opcional)" HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:User">
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Criar tarefa" Command="{Binding CreateTaskCommand}"
+                            Background="#03A9F4" Foreground="White"
+                            HorizontalAlignment="Left" Padding="20,10" CornerRadius="6"/>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#43A047" FontSize="12"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Task list -->
+            <ItemsControl ItemsSource="{Binding Tasks}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:WorkTask">
+                        <Border Background="White" CornerRadius="10" Padding="20" Margin="0,0,0,10"
+                                BoxShadow="0 1 8 0 #10000000">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0" Spacing="4">
+                                    <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="SemiBold" Foreground="#263238"/>
+                                    <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#78909C"
+                                               TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
+                                        <Border Background="#E3F2FD" CornerRadius="4" Padding="8,3">
+                                            <TextBlock Text="{Binding Status}" FontSize="11" Foreground="#1565C0"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="Concluir"
+                                        Command="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).CompleteTaskCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="#66BB6A" Foreground="White"
+                                        Padding="14,8" CornerRadius="6" VerticalAlignment="Center"
+                                        IsVisible="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).IsManager}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

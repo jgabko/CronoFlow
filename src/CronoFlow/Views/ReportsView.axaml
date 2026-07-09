@@ -1,0 +1,126 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TimeFlow.ViewModels"
+             xmlns:services="using:TimeFlow.Services"
+             xmlns:conv="using:TimeFlow.Converters"
+             x:Class="TimeFlow.Views.ReportsView"
+             x:DataType="vm:ReportsViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="24" Margin="0,0,0,24">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Relatórios" FontSize="24" FontWeight="Bold" Foreground="#263238"/>
+                <Button Grid.Column="1" Content="↻ Atualizar" Command="{Binding RefreshCommand}"
+                        Background="Transparent" Foreground="#03A9F4"/>
+            </Grid>
+
+            <!-- Team overview (Manager) -->
+            <Grid ColumnDefinitions="*,*,*,*" IsVisible="{Binding ShowTeamSection}">
+                <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="20" Margin="0,0,8,0"
+                        BoxShadow="0 2 12 0 #15000000">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Tempo Total" FontSize="12" Foreground="#78909C"/>
+                        <TextBlock Text="{Binding TeamTotalTime}" FontSize="22" FontWeight="Bold" Foreground="#03A9F4"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Background="White" CornerRadius="10" Padding="20" Margin="4,0"
+                        BoxShadow="0 2 12 0 #15000000">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Registros" FontSize="12" Foreground="#78909C"/>
+                        <TextBlock Text="{Binding TeamTotalEntries}" FontSize="22" FontWeight="Bold" Foreground="#5C6BC0"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Background="White" CornerRadius="10" Padding="20" Margin="4,0"
+                        BoxShadow="0 2 12 0 #15000000">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Tarefas Ativas" FontSize="12" Foreground="#78909C"/>
+                        <TextBlock Text="{Binding TeamActiveTasks}" FontSize="22" FontWeight="Bold" Foreground="#66BB6A"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="3" Background="White" CornerRadius="10" Padding="20" Margin="8,0,0,0"
+                        BoxShadow="0 2 12 0 #15000000">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Funcionários" FontSize="12" Foreground="#78909C"/>
+                        <TextBlock Text="{Binding TeamEmployees}" FontSize="22" FontWeight="Bold" Foreground="#FFA726"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Employee performance -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000"
+                    IsVisible="{Binding ShowEmployeeSection}">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="Desempenho Individual" FontSize="16" FontWeight="SemiBold" Foreground="#37474F"/>
+                    <ItemsControl ItemsSource="{Binding EmployeeStats}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="services:EmployeePerformance">
+                                <Grid ColumnDefinitions="*,100,80,80" Margin="0,6">
+                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding TotalSeconds, Converter={x:Static conv:SecondsToDurationConverter.Instance}}"
+                                               Foreground="#03A9F4"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding EntryCount, StringFormat='{}{0} reg.'}"
+                                               Foreground="#78909C" FontSize="12"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding TasksWorked, StringFormat='{}{0} tarefas'}"
+                                               Foreground="#78909C" FontSize="12"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Personal performance (Employee) -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000"
+                    IsVisible="{Binding !ShowEmployeeSection}">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="Meu Desempenho" FontSize="16" FontWeight="SemiBold" Foreground="#37474F"/>
+                    <ItemsControl ItemsSource="{Binding EmployeeStats}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="services:EmployeePerformance">
+                                <Grid ColumnDefinitions="*,100,80,80" Margin="0,6">
+                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding TotalSeconds, Converter={x:Static conv:SecondsToDurationConverter.Instance}}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding EntryCount, StringFormat='{}{0} reg.'}"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding TasksWorked, StringFormat='{}{0} tarefas'}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Task performance -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000"
+                    IsVisible="{Binding ShowTaskSection}">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="Desempenho por Tarefa" FontSize="16" FontWeight="SemiBold" Foreground="#37474F"/>
+                    <ItemsControl ItemsSource="{Binding TaskStats}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="services:TaskPerformance">
+                                <Border Background="#FAFAFA" CornerRadius="8" Padding="14" Margin="0,4">
+                                    <Grid ColumnDefinitions="*,90,80,70">
+                                        <StackPanel Grid.Column="0" Spacing="2">
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Status}" FontSize="11" Foreground="#78909C"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="{Binding TotalSeconds, Converter={x:Static conv:SecondsToDurationConverter.Instance}}"
+                                                   Foreground="#03A9F4" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Contributors, StringFormat='{}{0} pessoas'}"
+                                                   FontSize="12" Foreground="#78909C" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding EntryCount, StringFormat='{}{0} reg.'}"
+                                                   FontSize="12" Foreground="#78909C" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

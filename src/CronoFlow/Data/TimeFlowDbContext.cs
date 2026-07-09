@@ -1,0 +1,54 @@
+using Microsoft.EntityFrameworkCore;
+using TimeFlow.Models;
+
+namespace TimeFlow.Data;
+
+public class TimeFlowDbContext : DbContext
+{
+    public DbSet<User> Users => Set<User>();
+    public DbSet<WorkTask> Tasks => Set<WorkTask>();
+    public DbSet<TaskAssignment> TaskAssignments => Set<TaskAssignment>();
+    public DbSet<ActiveTimer> ActiveTimers => Set<ActiveTimer>();
+    public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
+
+    private readonly string _dbPath;
+
+    public TimeFlowDbContext()
+    {
+        var appData = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "TimeFlow");
+        Directory.CreateDirectory(appData);
+        _dbPath = Path.Combine(appData, "timeflow.db");
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite($"Data Source={_dbPath}");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<TaskAssignment>(entity =>
+        {
+            entity.HasKey(e => new { e.TaskId, e.UserId });
+            entity.HasOne(e => e.Task).WithMany(t => t.Assignments).HasForeignKey(e => e.TaskId);
+            entity.HasOne(e => e.User).WithMany(u => u.Assignments).HasForeignKey(e => e.UserId);
+        });
+
+        modelBuilder.Entity<ActiveTimer>(entity =>
+        {
+            entity.HasIndex(e => e.UserId).IsUnique();
+            entity.HasOne(e => e.User).WithMany(u => u.ActiveTimers).HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.Task).WithMany(t => t.ActiveTimers).HasForeignKey(e => e.TaskId);
+        });
+
+        modelBuilder.Entity<TimeEntry>(entity =>
+        {
+            entity.HasOne(e => e.User).WithMany(u => u.TimeEntries).HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.Task).WithMany(t => t.TimeEntries).HasForeignKey(e => e.TaskId);
+        });
+
+        modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+    }
+}

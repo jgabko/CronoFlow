@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TimeFlow.ViewModels"
+        x:Class="TimeFlow.Views.MiniPlayerWindow"
+        x:DataType="vm:TimerMiniPlayerViewModel"
+        Title="TimeFlow — Timer"
+        Width="320" Height="120"
+        CanResize="False"
+        Topmost="True"
+        ShowInTaskbar="False"
+        WindowDecorations="BorderOnly"
+        WindowStartupLocation="Manual"
+        Background="#263238">
+
+    <Border CornerRadius="10" Padding="16,12" Background="#263238">
+        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                       Text="{Binding TaskTitle}" Foreground="#B0BEC5" FontSize="12"
+                       TextTrimming="CharacterEllipsis"/>
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="{Binding ElapsedDisplay}" Foreground="#03A9F4"
+                       FontSize="28" FontWeight="Light" FontFamily="Consolas, monospace"
+                       VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="6"
+                        VerticalAlignment="Center">
+                <Button Content="⏸" Command="{Binding PauseOrResumeCommand}"
+                        Width="36" Height="36" CornerRadius="18"
+                        Background="#37474F" Foreground="White" FontSize="14"/>
+                <Button Content="⏹" Command="{Binding StopCommand}"
+                        Width="36" Height="36" CornerRadius="18"
+                        Background="#EF5350" Foreground="White" FontSize="14"/>
+            </StackPanel>
+            <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                      Content="Sempre no topo" IsChecked="{Binding AlwaysOnTop}"
+                      Foreground="#78909C" FontSize="11" Margin="0,6,0,0"/>
+        </Grid>
+    </Border>
+</Window>

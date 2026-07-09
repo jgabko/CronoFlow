@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TimeFlow.ViewModels"
+        x:Class="TimeFlow.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="TimeFlow"
+        Width="1100" Height="720"
+        MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7FA">
+
+    <Grid ColumnDefinitions="220,*">
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#1A237E">
+            <DockPanel>
+                <!-- Logo -->
+                <StackPanel DockPanel.Dock="Top" Margin="20,24,20,32" Spacing="2">
+                    <TextBlock Text="TimeFlow" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Cronoanálise" FontSize="11" Foreground="#9FA8DA"/>
+                </StackPanel>
+
+                <!-- Navigation -->
+                <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="12,0">
+                    <Button Content="⏱  Cronômetro" Command="{Binding NavigateCommand}" CommandParameter="timer"
+                            Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
+                    <Button Content="📋  Tarefas" Command="{Binding NavigateCommand}" CommandParameter="tasks"
+                            Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
+                    <Button Content="📊  Relatórios" Command="{Binding NavigateCommand}" CommandParameter="reports"
+                            Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
+                </StackPanel>
+
+                <!-- User info -->
+                <Border DockPanel.Dock="Bottom" Margin="12,0,12,16" Background="#283593" CornerRadius="8" Padding="14">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="{Binding UserDisplayName}" Foreground="White" FontWeight="SemiBold" FontSize="13"/>
+                        <TextBlock Text="{Binding UserRoleLabel}" Foreground="#9FA8DA" FontSize="11"/>
+                        <Button Content="Sair" Command="{Binding LogoutCommand}"
+                                Background="Transparent" Foreground="#EF9A9A"
+                                HorizontalAlignment="Left" Padding="0" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Column="1" RowDefinitions="Auto,*">
+            <Border Grid.Row="0" Background="White" Padding="28,16" BoxShadow="0 1 4 0 #10000000">
+                <TextBlock Text="Painel de Controle" FontSize="14" Foreground="#78909C"/>
+            </Border>
+            <Border Grid.Row="1" Padding="28,20">
+                <ContentControl Content="{Binding CurrentPage}"/>
+            </Border>
+        </Grid>
+    </Grid>
+
+    <Window.Styles>
+        <Style Selector="Button.nav-btn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C5CAE9"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="Button.nav-btn:pointerover">
+            <Setter Property="Background" Value="#283593"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+</Window>

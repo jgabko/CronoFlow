@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TimeFlow.ViewModels"
+             x:Class="TimeFlow.Views.TimerView"
+             x:DataType="vm:TimerViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="24" Margin="0,0,0,24">
+            <TextBlock Text="Cronômetro" FontSize="24" FontWeight="Bold" Foreground="#263238"/>
+
+            <!-- Active timer card -->
+            <Border Background="White" CornerRadius="12" Padding="28"
+                    BoxShadow="0 2 12 0 #15000000">
+                <StackPanel Spacing="20" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding ActiveTaskTitle}" FontSize="16"
+                               Foreground="#546E7A" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding ElapsedDisplay}" FontSize="56" FontWeight="Light"
+                               Foreground="#03A9F4" HorizontalAlignment="Center"
+                               FontFamily="Consolas, monospace"/>
+
+                    <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
+                        <Button Content="▶ Iniciar" Command="{Binding StartCommand}"
+                                IsVisible="{Binding !HasActiveTimer}"
+                                Background="#03A9F4" Foreground="White"
+                                Padding="24,12" CornerRadius="8" FontWeight="SemiBold"/>
+                        <Button Content="⏸ Pausar" Command="{Binding PauseCommand}"
+                                IsVisible="{Binding IsRunning}"
+                                Background="#FFA726" Foreground="White"
+                                Padding="24,12" CornerRadius="8" FontWeight="SemiBold"/>
+                        <Button Content="▶ Retomar" Command="{Binding ResumeCommand}"
+                                IsVisible="{Binding IsPaused}"
+                                Background="#66BB6A" Foreground="White"
+                                Padding="24,12" CornerRadius="8" FontWeight="SemiBold"/>
+                        <Button Content="⏹ Parar" Command="{Binding StopCommand}"
+                                IsVisible="{Binding HasActiveTimer}"
+                                Background="#EF5350" Foreground="White"
+                                Padding="24,12" CornerRadius="8" FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#43A047" FontSize="13"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Task selector -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Selecionar tarefa" FontSize="15" FontWeight="SemiBold" Foreground="#37474F"/>
+                    <ComboBox ItemsSource="{Binding AvailableTasks}"
+                              SelectedItem="{Binding SelectedTask}"
+                              HorizontalAlignment="Stretch"
+                              PlaceholderText="Escolha uma tarefa..."
+                              IsEnabled="{Binding !HasActiveTimer}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
