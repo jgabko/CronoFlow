@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TimeFlow.Models;
+using CronoFlow.Models;
 
-namespace TimeFlow.ViewModels;
+namespace CronoFlow.ViewModels;
 
 public partial class TasksViewModel : ViewModelBase
 {

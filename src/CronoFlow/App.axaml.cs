@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using TimeFlow.Models;
-using TimeFlow.ViewModels;
-using TimeFlow.Views;
+using CronoFlow.Models;
+using CronoFlow.ViewModels;
+using CronoFlow.Views;
 
-namespace TimeFlow;
+namespace CronoFlow;
 
 public partial class App : Application
 {
@@ -60,7 +60,7 @@ public partial class App : Application
         if (Current is not App app)
             return;
 
-        app._loginWindow?.Close();
+        var loginWindow = app._loginWindow;
         app._loginWindow = null;
 
         app._mainViewModel = new MainViewModel();
@@ -74,6 +74,11 @@ public partial class App : Application
                 d.Shutdown();
         };
         app._mainWindow.Show();
+
+        // Só fechamos a janela de login depois que a MainWindow já existe,
+        // para que o handler "Closed" da LoginWindow (que faz Shutdown se
+        // _mainWindow ainda for null) não derrube o app inteiro.
+        loginWindow?.Close();
 
         app._miniPlayer = new MiniPlayerWindow { DataContext = app._mainViewModel.MiniPlayer };
         ServiceLocator.Timer.TimerChanged += app._mainViewModel.MiniPlayer.Refresh;

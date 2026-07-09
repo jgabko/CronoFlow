@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 
-namespace TimeFlow.Views;
+namespace CronoFlow.Views;
 
 public partial class MiniPlayerWindow : Window
 {

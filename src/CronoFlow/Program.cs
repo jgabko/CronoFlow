@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace TimeFlow;
+namespace CronoFlow;
 
 sealed class Program
 {

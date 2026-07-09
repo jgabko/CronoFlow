@@ -1,10 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TimeFlow.Models;
-using TimeFlow.Services;
-using TimeFlow.Views;
+using CronoFlow.Models;
+using CronoFlow.Services;
+using CronoFlow.Views;
 
-namespace TimeFlow.ViewModels;
+namespace CronoFlow.ViewModels;
 
 public partial class TimerMiniPlayerViewModel : ViewModelBase
 {

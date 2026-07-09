@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Models;
+using CronoFlow.Models;
 
-namespace TimeFlow.Data;
+namespace CronoFlow.Data;
 
 public static class DatabaseInitializer
 {
-    public static void Initialize(TimeFlowDbContext db)
+    public static void Initialize(CronoFlowDbContext db)
     {
         db.Database.EnsureCreated();
         ApplySchemaUpdates(db);
@@ -72,7 +72,7 @@ public static class DatabaseInitializer
         db.SaveChanges();
     }
 
-    private static void ApplySchemaUpdates(TimeFlowDbContext db)
+    private static void ApplySchemaUpdates(CronoFlowDbContext db)
     {
         try
         {

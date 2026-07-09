@@ -1,8 +1,8 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
-using TimeFlow.Models;
+using CronoFlow.Models;
 
-namespace TimeFlow.Converters;
+namespace CronoFlow.Converters;
 
 public class UserRoleLabelConverter : IValueConverter
 {

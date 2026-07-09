@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Data;
+using CronoFlow.Data;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public record EmployeePerformance(
     int UserId,
@@ -32,7 +32,7 @@ public interface IReportService
     Task<IReadOnlyList<EmployeePerformance>> GetEmployeePerformanceForUserAsync(int userId);
 }
 
-public class ReportService(TimeFlowDbContext db) : IReportService
+public class ReportService(CronoFlowDbContext db) : IReportService
 {
     public async Task<IReadOnlyList<EmployeePerformance>> GetEmployeePerformanceAsync()
     {

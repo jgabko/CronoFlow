@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:TimeFlow.ViewModels"
-             xmlns:models="using:TimeFlow.Models"
-             x:Class="TimeFlow.Views.TasksView"
+             xmlns:vm="using:CronoFlow.ViewModels"
+             xmlns:models="using:CronoFlow.Models"
+             x:Class="CronoFlow.Views.TasksView"
              x:DataType="vm:TasksViewModel">
 
     <ScrollViewer>

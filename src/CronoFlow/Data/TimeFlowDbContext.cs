@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Models;
+using CronoFlow.Models;
 
-namespace TimeFlow.Data;
+namespace CronoFlow.Data;
 
-public class TimeFlowDbContext : DbContext
+public class CronoFlowDbContext : DbContext
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<WorkTask> Tasks => Set<WorkTask>();
@@ -13,13 +13,13 @@ public class TimeFlowDbContext : DbContext
 
     private readonly string _dbPath;
 
-    public TimeFlowDbContext()
+    public CronoFlowDbContext()
     {
         var appData = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "TimeFlow");
+            "CronoFlow");
         Directory.CreateDirectory(appData);
-        _dbPath = Path.Combine(appData, "timeflow.db");
+        _dbPath = Path.Combine(appData, "cronoflow.db");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

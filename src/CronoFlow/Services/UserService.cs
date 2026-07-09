@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Data;
-using TimeFlow.Models;
+using CronoFlow.Data;
+using CronoFlow.Models;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public record UserListItem(
     int Id,
@@ -23,7 +23,7 @@ public interface IUserService
     Task SetActiveAsync(int id, bool isActive);
 }
 
-public class UserService(TimeFlowDbContext db) : IUserService
+public class UserService(CronoFlowDbContext db) : IUserService
 {
     public async Task<IReadOnlyList<UserListItem>> GetAllUsersAsync()
     {

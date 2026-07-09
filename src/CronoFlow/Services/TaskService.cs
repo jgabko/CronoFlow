@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Data;
-using TimeFlow.Models;
+using CronoFlow.Data;
+using CronoFlow.Models;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public interface ITaskService
 {
@@ -13,7 +13,7 @@ public interface ITaskService
     Task CompleteTaskAsync(int taskId);
 }
 
-public class TaskService(TimeFlowDbContext db) : ITaskService
+public class TaskService(CronoFlowDbContext db) : ITaskService
 {
     public async Task<IReadOnlyList<WorkTask>> GetTasksForUserAsync(int userId, bool isManager)
     {

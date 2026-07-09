@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:TimeFlow.ViewModels"
-             x:Class="TimeFlow.Views.TimerView"
+             xmlns:vm="using:CronoFlow.ViewModels"
+             x:Class="CronoFlow.Views.TimerView"
              x:DataType="vm:TimerViewModel">
 
     <ScrollViewer>

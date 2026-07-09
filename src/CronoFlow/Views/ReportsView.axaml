@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:TimeFlow.ViewModels"
-             xmlns:services="using:TimeFlow.Services"
-             xmlns:conv="using:TimeFlow.Converters"
-             x:Class="TimeFlow.Views.ReportsView"
+             xmlns:vm="using:CronoFlow.ViewModels"
+             xmlns:services="using:CronoFlow.Services"
+             xmlns:conv="using:CronoFlow.Converters"
+             x:Class="CronoFlow.Views.ReportsView"
              x:DataType="vm:ReportsViewModel">
 
     <ScrollViewer>

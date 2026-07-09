@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace TimeFlow.ViewModels;
+namespace CronoFlow.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

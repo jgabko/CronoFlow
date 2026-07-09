@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace TimeFlow.Views;
+namespace CronoFlow.Views;
 
 public partial class TimerView : UserControl
 {

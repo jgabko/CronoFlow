@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using TimeFlow.ViewModels;
+using CronoFlow.ViewModels;
 
-namespace TimeFlow;
+namespace CronoFlow;
 
 /// <summary>
 /// Given a view model, returns the corresponding view if possible.

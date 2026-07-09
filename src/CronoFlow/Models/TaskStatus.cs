@@ -1,4 +1,4 @@
-namespace TimeFlow.Models;
+namespace CronoFlow.Models;
 
 public enum WorkTaskStatus
 {

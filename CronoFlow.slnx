@@ -1,5 +1,5 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/TimeFlow/TimeFlow.csproj" />
+    <Project Path="src/CronoFlow/CronoFlow.csproj" />
   </Folder>
 </Solution>

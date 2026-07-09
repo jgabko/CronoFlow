@@ -1,9 +1,9 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:TimeFlow.ViewModels"
-        x:Class="TimeFlow.Views.LoginWindow"
+        xmlns:vm="using:CronoFlow.ViewModels"
+        x:Class="CronoFlow.Views.LoginWindow"
         x:DataType="vm:LoginViewModel"
-        Title="TimeFlow — Login"
+        Title="CronoFlow — Login"
         Width="420" Height="520"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
@@ -13,7 +13,7 @@
         <!-- Header -->
         <Border Grid.Row="0" Background="#03A9F4" Padding="32,28">
             <StackPanel Spacing="4">
-                <TextBlock Text="TimeFlow" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="CronoFlow" FontSize="28" FontWeight="Bold" Foreground="White"/>
                 <TextBlock Text="Cronoanálise Corporativa" FontSize="13" Foreground="#E1F5FE"/>
             </StackPanel>
         </Border>

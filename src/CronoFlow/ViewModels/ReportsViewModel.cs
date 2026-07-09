@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TimeFlow.Services;
+using CronoFlow.Services;
 
-namespace TimeFlow.ViewModels;
+namespace CronoFlow.ViewModels;
 
 public partial class ReportsViewModel : ViewModelBase
 {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Data;
-using TimeFlow.Models;
+using CronoFlow.Data;
+using CronoFlow.Models;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public record TimerSnapshot(
     int TaskId,
@@ -23,7 +23,7 @@ public interface ITimerService
     long CalculateElapsed(ActiveTimer timer);
 }
 
-public class TimerService(TimeFlowDbContext db) : ITimerService
+public class TimerService(CronoFlowDbContext db) : ITimerService
 {
     public event Action? TimerChanged;
 

@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TimeFlow.Models;
-using TimeFlow.Services;
+using CronoFlow.Models;
+using CronoFlow.Services;
 
-namespace TimeFlow.ViewModels;
+namespace CronoFlow.ViewModels;
 
 public partial class TimerViewModel : ViewModelBase
 {

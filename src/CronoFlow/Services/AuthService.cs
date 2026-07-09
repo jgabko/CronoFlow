@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using TimeFlow.Data;
-using TimeFlow.Models;
+using CronoFlow.Data;
+using CronoFlow.Models;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public interface IAuthService
 {
@@ -10,7 +10,7 @@ public interface IAuthService
     Task<IReadOnlyList<User>> GetAllEmployeesAsync();
 }
 
-public class AuthService(TimeFlowDbContext db) : IAuthService
+public class AuthService(CronoFlowDbContext db) : IAuthService
 {
     public async Task<User?> LoginAsync(string username, string password)
     {

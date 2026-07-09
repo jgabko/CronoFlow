@@ -1,8 +1,8 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
-using TimeFlow.Services;
+using CronoFlow.Services;
 
-namespace TimeFlow.Converters;
+namespace CronoFlow.Converters;
 
 public class SecondsToDurationConverter : IValueConverter
 {

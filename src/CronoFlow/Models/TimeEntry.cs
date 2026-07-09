@@ -1,4 +1,4 @@
-namespace TimeFlow.Models;
+namespace CronoFlow.Models;
 
 /// <summary>
 /// Completed time segment saved after Stop.

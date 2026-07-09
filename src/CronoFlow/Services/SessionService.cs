@@ -1,6 +1,6 @@
-using TimeFlow.Models;
+using CronoFlow.Models;
 
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public interface ISessionService
 {

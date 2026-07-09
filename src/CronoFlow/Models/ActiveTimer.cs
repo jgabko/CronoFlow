@@ -1,4 +1,4 @@
-namespace TimeFlow.Models;
+namespace CronoFlow.Models;
 
 /// <summary>
 /// Persisted timer state for crash recovery. One active timer per user at a time.

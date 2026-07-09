@@ -1,4 +1,4 @@
-namespace TimeFlow.Services;
+namespace CronoFlow.Services;
 
 public static class TimeFormatter
 {

@@ -1,7 +1,7 @@
 using Avalonia.Controls;
-using TimeFlow.ViewModels;
+using CronoFlow.ViewModels;
 
-namespace TimeFlow.Views;
+namespace CronoFlow.Views;
 
 public partial class LoginWindow : Window
 {

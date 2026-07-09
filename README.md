@@ -1,4 +1,4 @@
-# TimeFlow
+# CronoFlow
 
 Aplicativo desktop de **cronoanálise corporativa** para rastreamento de tempo e análise de desempenho de equipes. Interface inspirada no Clockify.
 
@@ -19,7 +19,7 @@ Aplicativo desktop de **cronoanálise corporativa** para rastreamento de tempo e
 ## Executar
 
 ```bash
-cd src/TimeFlow
+cd src/CronoFlow
 dotnet run
 ```
 
@@ -33,4 +33,4 @@ dotnet run
 
 ## Banco de dados
 
-SQLite em `~/.local/share/TimeFlow/timeflow.db`
+SQLite em `~/.local/share/CronoFlow/cronoflow.db`
