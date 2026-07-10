@@ -45,7 +45,7 @@ public partial class TimerMiniPlayerViewModel : ViewModelBase
         }
 
         TaskTitle = snapshot.TaskTitle;
-        ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.ElapsedSeconds);
+        ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.LiveElapsedSeconds);
         IsRunning = snapshot.State == TimerState.Running;
 
         if (IsRunning && !_uiTimer.Enabled)
@@ -60,7 +60,7 @@ public partial class TimerMiniPlayerViewModel : ViewModelBase
         {
             var snapshot = ServiceLocator.Timer.Current;
             if (snapshot is not null && snapshot.State == TimerState.Running)
-                ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.ElapsedSeconds);
+                ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.LiveElapsedSeconds);
         });
     }
 

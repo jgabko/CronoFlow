@@ -9,7 +9,20 @@ public record TimerSnapshot(
     string TaskTitle,
     TimerState State,
     long ElapsedSeconds,
-    DateTime StartedAt);
+    DateTime StartedAt,
+    long AccumulatedSeconds,
+    DateTime LastResumedAt)
+{
+    /// <summary>
+    /// Tempo decorrido calculado no momento da leitura (não um valor congelado).
+    /// Deve ser usado pela UI a cada "tick" do timer visual, em vez de ElapsedSeconds,
+    /// que só reflete o instante em que o snapshot foi criado.
+    /// </summary>
+    public long LiveElapsedSeconds =>
+        State == TimerState.Running
+            ? AccumulatedSeconds + (long)(DateTime.UtcNow - LastResumedAt).TotalSeconds
+            : ElapsedSeconds;
+}
 
 public interface ITimerService
 {
@@ -150,5 +163,6 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
     }
 
     private TimerSnapshot ToSnapshot(ActiveTimer timer) =>
-        new(timer.TaskId, timer.Task.Title, timer.State, CalculateElapsed(timer), timer.StartedAt);
+        new(timer.TaskId, timer.Task.Title, timer.State, CalculateElapsed(timer), timer.StartedAt,
+            timer.AccumulatedSeconds, timer.LastResumedAt);
 }

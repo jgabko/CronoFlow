@@ -63,7 +63,7 @@ public partial class TimerViewModel : ViewModelBase
         if (snapshot is not null)
         {
             ActiveTaskTitle = snapshot.TaskTitle;
-            ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.ElapsedSeconds);
+            ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.LiveElapsedSeconds);
             SelectedTask = AvailableTasks.FirstOrDefault(t => t.Id == snapshot.TaskId);
 
             if (IsRunning && !_uiTimer.Enabled)
@@ -85,7 +85,7 @@ public partial class TimerViewModel : ViewModelBase
         {
             var snapshot = ServiceLocator.Timer.Current;
             if (snapshot is not null && snapshot.State == TimerState.Running)
-                ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.ElapsedSeconds);
+                ElapsedDisplay = TimeFormatter.FormatDuration(snapshot.LiveElapsedSeconds);
         });
     }
 
