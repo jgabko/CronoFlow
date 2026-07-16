@@ -22,6 +22,7 @@ public partial class MainViewModel : ViewModelBase
     public TasksViewModel TasksPage { get; } = new();
     public ReportsViewModel ReportsPage { get; } = new();
     public TimerMiniPlayerViewModel MiniPlayer { get; } = new();
+    public HistoryViewModel HistoryPage { get; } = new();
 
     public bool IsManager => ServiceLocator.Session.IsManager;
 
@@ -33,6 +34,7 @@ public partial class MainViewModel : ViewModelBase
         await TimerPage.InitializeAsync();
         await TasksPage.InitializeAsync();
         await ReportsPage.InitializeAsync();
+        await HistoryPage.InitializeAsync();
         MiniPlayer.Refresh();
 
         CurrentPage = TimerPage;
@@ -46,6 +48,7 @@ public partial class MainViewModel : ViewModelBase
         {
             "timer" => TimerPage,
             "tasks" => TasksPage,
+            "history" => HistoryPage,
             "reports" => ReportsPage,
             _ => TimerPage
         };
@@ -55,6 +58,7 @@ public partial class MainViewModel : ViewModelBase
             "timer" => 0,
             "tasks" => 1,
             "reports" => 2,
+            "history" => 3,
             _ => 0
         };
     }

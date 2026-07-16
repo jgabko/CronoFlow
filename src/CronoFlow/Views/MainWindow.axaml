@@ -27,6 +27,8 @@
                             Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
                     <Button Content="📊  Relatórios" Command="{Binding NavigateCommand}" CommandParameter="reports"
                             Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
+                    <Button Content="🕘  Histórico" Command="{Binding NavigateCommand}" CommandParameter="history"
+                            Classes="nav-btn" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
                 </StackPanel>
 
                 <!-- User info -->

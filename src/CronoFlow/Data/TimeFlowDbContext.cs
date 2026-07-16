@@ -11,6 +11,8 @@ public class CronoFlowDbContext : DbContext
     public DbSet<ActiveTimer> ActiveTimers => Set<ActiveTimer>();
     public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
 
+    public DbSet<TimerActionLog> TimerActionLogs => Set<TimerActionLog>();
+
     private readonly string _dbPath;
 
     public CronoFlowDbContext()
@@ -47,6 +49,13 @@ public class CronoFlowDbContext : DbContext
         {
             entity.HasOne(e => e.User).WithMany(u => u.TimeEntries).HasForeignKey(e => e.UserId);
             entity.HasOne(e => e.Task).WithMany(t => t.TimeEntries).HasForeignKey(e => e.TaskId);
+        });
+
+        modelBuilder.Entity<TimerActionLog>(entity =>
+        {
+            entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.Task).WithMany().HasForeignKey(e => e.TaskId);
+            entity.HasIndex(e => e.TimestampUtc);
         });
 
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();

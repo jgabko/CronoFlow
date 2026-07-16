@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:CronoFlow.ViewModels"
+             xmlns:models="using:CronoFlow.Models"
+             xmlns:services="using:CronoFlow.Services"
+             xmlns:conv="using:CronoFlow.Converters"
+             x:Class="CronoFlow.Views.HistoryView"
+             x:DataType="vm:HistoryViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="20" Margin="0,0,0,24">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="Histórico de Ações" FontSize="24" FontWeight="Bold" Foreground="#263238"/>
+                <Button Grid.Column="1" Content="↻ Atualizar" Command="{Binding RefreshCommand}"
+                        Background="Transparent" Foreground="#03A9F4"/>
+            </Grid>
+
+            <!-- Filter (Manager only) -->
+            <Border Background="White" CornerRadius="12" Padding="24"
+                    BoxShadow="0 2 12 0 #15000000"
+                    IsVisible="{Binding IsManager}">
+                <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                    <TextBlock Text="Funcionário:" VerticalAlignment="Center" Foreground="#37474F"/>
+                    <ComboBox ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}"
+                              PlaceholderText="Todos" MinWidth="220">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:User">
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Filtrar" Command="{Binding RefreshCommand}"
+                            Background="#03A9F4" Foreground="White" Padding="14,8" CornerRadius="6"/>
+                    <Button Content="Limpar filtro" Command="{Binding ClearFilterCommand}"
+                            Background="Transparent" Foreground="#78909C"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Log entries -->
+            <ItemsControl ItemsSource="{Binding Entries}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="services:TimerActionLogEntry">
+                        <Border Background="White" CornerRadius="10" Padding="16,14" Margin="0,0,0,8"
+                                BoxShadow="0 1 8 0 #10000000">
+                            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                <Border Grid.Column="0" Background="#E3F2FD" CornerRadius="4" Padding="8,3" Margin="0,0,12,0">
+                                    <TextBlock Text="{Binding ActionType, Converter={x:Static conv:TimerActionTypeLabelConverter.Instance}}"
+                                               FontSize="11" Foreground="#1565C0"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Spacing="2">
+                                    <TextBlock Text="{Binding TaskTitle}" FontSize="14" FontWeight="SemiBold" Foreground="#263238"/>
+                                    <TextBlock Text="{Binding UserDisplayName}" FontSize="12" Foreground="#78909C"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="{Binding TimestampUtc, StringFormat='dd/MM/yyyy'}"
+                                           FontSize="12" Foreground="#78909C" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                <TextBlock Grid.Column="3" Text="{Binding TimestampUtc, StringFormat='HH:mm:ss'}"
+                                           FontSize="13" FontWeight="SemiBold" Foreground="#37474F" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -82,5 +82,15 @@ public static class DatabaseInitializer
         {
             // Column already exists.
         }
+        db.Database.ExecuteSqlRaw(
+        """
+        CREATE TABLE IF NOT EXISTS TimerActionLogs (
+            Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            UserId INTEGER NOT NULL,
+            TaskId INTEGER NOT NULL,
+            ActionType INTEGER NOT NULL,
+            TimestampUtc TEXT NOT NULL
+        )
+        """);
     }
 }

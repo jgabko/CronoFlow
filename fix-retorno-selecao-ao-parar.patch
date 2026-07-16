@@ -1,0 +1,13 @@
+diff --git a/src/CronoFlow/ViewModels/TimerViewModel.cs b/src/CronoFlow/ViewModels/TimerViewModel.cs
+index 5609e06..f8bcafa 100644
+--- a/src/CronoFlow/ViewModels/TimerViewModel.cs
++++ b/src/CronoFlow/ViewModels/TimerViewModel.cs
+@@ -75,6 +75,8 @@ public partial class TimerViewModel : ViewModelBase
+         {
+             ActiveTaskTitle = "Nenhuma tarefa ativa";
+             ElapsedDisplay = "00:00";
++            SelectedTask = null;
++            StatusMessage = string.Empty;
+             _uiTimer.Stop();
+         }
+     }

@@ -14,6 +14,9 @@ public partial class TasksViewModel : ViewModelBase
     private string _newTaskTitle = string.Empty;
 
     [ObservableProperty]
+    private int? _pendingDeleteTaskId;
+
+    [ObservableProperty]
     private string _newTaskDescription = string.Empty;
 
     [ObservableProperty]
@@ -44,8 +47,44 @@ public partial class TasksViewModel : ViewModelBase
         var user = ServiceLocator.Session.CurrentUser!;
         var tasks = await ServiceLocator.Tasks.GetTasksForUserAsync(user.Id, IsManager);
         Tasks = new ObservableCollection<WorkTask>(tasks);
+        PendingDeleteTaskId = null;
     }
 
+    [RelayCommand]
+    private async Task DeleteTaskAsync(WorkTask task)
+    {
+        if (!IsManager)
+            return;
+
+        if (PendingDeleteTaskId != task.Id)
+        {
+            // First click just arms the confirmation; the UI swaps the button label.
+            PendingDeleteTaskId = task.Id;
+            return;
+        }
+
+        StatusMessage = string.Empty;
+        try
+        {
+            await ServiceLocator.Tasks.DeleteTaskAsync(task.Id);
+            StatusMessage = "Tarefa excluída.";
+        }
+        catch (InvalidOperationException ex)
+        {
+            StatusMessage = ex.Message;
+        }
+        finally
+        {
+            PendingDeleteTaskId = null;
+            await RefreshAsync();
+        }
+    }
+
+[RelayCommand]
+private void CancelDeleteTask()
+{
+    PendingDeleteTaskId = null;
+}
     [RelayCommand]
     private async Task CreateTaskAsync()
     {
