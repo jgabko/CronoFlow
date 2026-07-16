@@ -1,6 +1,10 @@
+**`src/CronoFlow/Views/TimerView.axaml`**
+```xml
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:CronoFlow.ViewModels"
+             xmlns:models="using:CronoFlow.Models"
+             xmlns:conv="using:CronoFlow.Converters"
              x:Class="CronoFlow.Views.TimerView"
              x:DataType="vm:TimerViewModel">
 
@@ -53,8 +57,14 @@
                               PlaceholderText="Escolha uma tarefa..."
                               IsEnabled="{Binding !HasActiveTimer}">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Title}"/>
+                            <DataTemplate x:DataType="models:WorkTask">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
+                                    <Border Background="#ECEFF1" CornerRadius="4" Padding="6,2">
+                                        <TextBlock Text="{Binding TotalTrackedSeconds, Converter={x:Static conv:SecondsToDurationConverter.Instance}}"
+                                                   FontSize="11" Foreground="#455A64"/>
+                                    </Border>
+                                </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -63,3 +73,4 @@
         </StackPanel>
     </ScrollViewer>
 </UserControl>
+```

@@ -84,3 +84,60 @@ public class TimerActionTypeLabelConverter : IValueConverter
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();
 }
+
+public class WorkTaskStatusLabelConverter : IValueConverter
+{
+    public static readonly WorkTaskStatusLabelConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is WorkTaskStatus status
+            ? status switch
+            {
+                WorkTaskStatus.Active => "Ativa",
+                WorkTaskStatus.Completed => "Concluída",
+                WorkTaskStatus.Archived => "Arquivada",
+                _ => value.ToString()
+            }
+            : value?.ToString();
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}
+
+public class WorkTaskStatusColorConverter : IValueConverter
+{
+    public static readonly WorkTaskStatusColorConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is WorkTaskStatus status
+            ? status switch
+            {
+                WorkTaskStatus.Active => "#1565C0",
+                WorkTaskStatus.Completed => "#2E7D32",
+                WorkTaskStatus.Archived => "#616161",
+                _ => "#616161"
+            }
+            : "#616161";
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}
+
+public class WorkTaskStatusBackgroundConverter : IValueConverter
+{
+    public static readonly WorkTaskStatusBackgroundConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is WorkTaskStatus status
+            ? status switch
+            {
+                WorkTaskStatus.Active => "#E3F2FD",
+                WorkTaskStatus.Completed => "#E8F5E9",
+                WorkTaskStatus.Archived => "#EEEEEE",
+                _ => "#EEEEEE"
+            }
+            : "#EEEEEE";
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotSupportedException();
+}

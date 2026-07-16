@@ -46,8 +46,15 @@
                                     <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#78909C"
                                                TextWrapping="Wrap"/>
                                     <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
-                                        <Border Background="#E3F2FD" CornerRadius="4" Padding="8,3">
-                                            <TextBlock Text="{Binding Status}" FontSize="11" Foreground="#1565C0"/>
+                                        <Border Background="{Binding Status, Converter={x:Static conv:WorkTaskStatusBackgroundConverter.Instance}}"
+                                                CornerRadius="4" Padding="8,3">
+                                            <TextBlock Text="{Binding Status, Converter={x:Static conv:WorkTaskStatusLabelConverter.Instance}}"
+                                                       FontSize="11"
+                                                       Foreground="{Binding Status, Converter={x:Static conv:WorkTaskStatusColorConverter.Instance}}"/>
+                                        </Border>
+                                        <Border Background="#ECEFF1" CornerRadius="4" Padding="8,3">
+                                            <TextBlock Text="{Binding TotalTrackedSeconds, Converter={x:Static conv:SecondsToDurationConverter.Instance}}"
+                                                       FontSize="11" Foreground="#455A64"/>
                                         </Border>
                                     </StackPanel>
                                 </StackPanel>

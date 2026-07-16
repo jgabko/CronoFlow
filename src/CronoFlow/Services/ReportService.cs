@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CronoFlow.Data;
+using CronoFlow.Models;
 
 namespace CronoFlow.Services;
 
@@ -16,7 +17,7 @@ public record TaskPerformance(
     long TotalSeconds,
     int Contributors,
     int EntryCount,
-    string Status);
+    WorkTaskStatus Status);
 
 public record TeamPerformance(
     long TotalSeconds,
@@ -71,7 +72,7 @@ public class ReportService(CronoFlowDbContext db) : IReportService
                 t.Entries.Sum(e => e.DurationSeconds),
                 t.Entries.Select(e => e.UserId).Distinct().Count(),
                 t.Entries.Count,
-                t.Status.ToString()))
+                t.Status))
             .OrderByDescending(p => p.TotalSeconds)
             .ToList();
     }
