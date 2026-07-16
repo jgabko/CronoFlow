@@ -54,19 +54,24 @@ public class ReportService(CronoFlowDbContext db) : IReportService
 
     public async Task<IReadOnlyList<TaskPerformance>> GetTaskPerformanceAsync()
     {
-        var entries = await db.TimeEntries
-            .Include(e => e.Task)
+        var tasks = await db.Tasks
+            .Select(t => new
+            {
+                t.Id,
+                t.Title,
+                t.Status,
+                Entries = t.TimeEntries
+            })
             .ToListAsync();
 
-        return entries
-            .GroupBy(e => new { e.TaskId, e.Task.Title, e.Task.Status })
-            .Select(g => new TaskPerformance(
-                g.Key.TaskId,
-                g.Key.Title,
-                g.Sum(e => e.DurationSeconds),
-                g.Select(e => e.UserId).Distinct().Count(),
-                g.Count(),
-                g.Key.Status.ToString()))
+        return tasks
+            .Select(t => new TaskPerformance(
+                t.Id,
+                t.Title,
+                t.Entries.Sum(e => e.DurationSeconds),
+                t.Entries.Select(e => e.UserId).Distinct().Count(),
+                t.Entries.Count,
+                t.Status.ToString()))
             .OrderByDescending(p => p.TotalSeconds)
             .ToList();
     }

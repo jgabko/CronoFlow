@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:CronoFlow.ViewModels"
              xmlns:models="using:CronoFlow.Models"
+             xmlns:conv="using:CronoFlow.Converters"
              x:Class="CronoFlow.Views.TasksView"
              x:DataType="vm:TasksViewModel">
-
     <ScrollViewer>
         <StackPanel Spacing="20" Margin="0,0,0,24">
             <Grid ColumnDefinitions="*,Auto">
@@ -12,7 +12,6 @@
                 <Button Grid.Column="1" Content="↻ Atualizar" Command="{Binding RefreshCommand}"
                         Background="Transparent" Foreground="#03A9F4"/>
             </Grid>
-
             <!-- Create task (Manager only) -->
             <Border Background="White" CornerRadius="12" Padding="24"
                     BoxShadow="0 2 12 0 #15000000"
@@ -35,7 +34,6 @@
                     <TextBlock Text="{Binding StatusMessage}" Foreground="#43A047" FontSize="12"/>
                 </StackPanel>
             </Border>
-
             <!-- Task list -->
             <ItemsControl ItemsSource="{Binding Tasks}">
                 <ItemsControl.ItemTemplate>
@@ -53,12 +51,47 @@
                                         </Border>
                                     </StackPanel>
                                 </StackPanel>
-                                <Button Grid.Column="1" Content="Concluir"
-                                        Command="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).CompleteTaskCommand}"
-                                        CommandParameter="{Binding}"
-                                        Background="#66BB6A" Foreground="White"
-                                        Padding="14,8" CornerRadius="6" VerticalAlignment="Center"
-                                        IsVisible="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).IsManager}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8"
+                                            IsVisible="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).IsManager}">
+                                    <Button Content="Concluir"
+                                            Command="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).CompleteTaskCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#66BB6A" Foreground="White"
+                                            Padding="14,8" CornerRadius="6" VerticalAlignment="Center"/>
+
+                                    <!-- Armed state: shows "Excluir" -->
+                                    <Button Content="Excluir"
+                                            Command="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).DeleteTaskCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#EF5350" Foreground="White"
+                                            Padding="14,8" CornerRadius="6" VerticalAlignment="Center">
+                                        <Button.IsVisible>
+                                            <MultiBinding Converter="{x:Static conv:TaskPendingDeleteConverter.Instance}" ConverterParameter="invert">
+                                                <MultiBinding.Bindings>
+                                                    <Binding Path="$parent[UserControl].((vm:TasksViewModel)DataContext).PendingDeleteTaskId"/>
+                                                    <Binding Path="Id"/>
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </Button.IsVisible>
+                                    </Button>
+
+                                    <!-- Confirm state: shows "Confirmar exclusão?" -->
+                                    <Button Content="Confirmar exclusão?"
+                                            Command="{Binding $parent[UserControl].((vm:TasksViewModel)DataContext).DeleteTaskCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#B71C1C" Foreground="White"
+                                            Padding="14,8" CornerRadius="6" VerticalAlignment="Center">
+                                        <Button.IsVisible>
+                                            <MultiBinding Converter="{x:Static conv:TaskPendingDeleteConverter.Instance}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding Path="$parent[UserControl].((vm:TasksViewModel)DataContext).PendingDeleteTaskId"/>
+                                                    <Binding Path="Id"/>
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </Button.IsVisible>
+                                        <ToolTip.Tip>Clique de novo pra confirmar</ToolTip.Tip>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </Border>
                     </DataTemplate>

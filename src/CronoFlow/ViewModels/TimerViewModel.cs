@@ -75,6 +75,8 @@ public partial class TimerViewModel : ViewModelBase
         {
             ActiveTaskTitle = "Nenhuma tarefa ativa";
             ElapsedDisplay = "00:00";
+            SelectedTask = null;
+            StatusMessage = string.Empty;
             _uiTimer.Stop();
         }
     }
@@ -102,7 +104,7 @@ public partial class TimerViewModel : ViewModelBase
         try
         {
             var userId = ServiceLocator.Session.CurrentUser!.Id;
-            await ServiceLocator.Timer.StartAsync(userId, SelectedTask.Id);
+            await ServiceLocator.Timer.StartAsync(userId, SelectedTask.Id, ServiceLocator.Session.IsManager);
         }
         catch (Exception ex)
         {

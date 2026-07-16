@@ -29,7 +29,7 @@ public interface ITimerService
     event Action? TimerChanged;
     TimerSnapshot? Current { get; }
     Task<TimerSnapshot?> RecoverAsync(int userId);
-    Task<TimerSnapshot> StartAsync(int userId, int taskId);
+    Task<TimerSnapshot> StartAsync(int userId, int taskId, bool isManager = false);
     Task<TimerSnapshot?> PauseAsync(int userId);
     Task<TimerSnapshot?> ResumeAsync(int userId);
     Task<TimeEntry?> StopAsync(int userId);
@@ -59,7 +59,7 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
         return Current;
     }
 
-    public async Task<TimerSnapshot> StartAsync(int userId, int taskId)
+    public async Task<TimerSnapshot> StartAsync(int userId, int taskId, bool isManager = false)
     {
         var existing = await db.ActiveTimers.FirstOrDefaultAsync(t => t.UserId == userId);
         if (existing is not null)
@@ -67,7 +67,15 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
 
         var assigned = await db.TaskAssignments.AnyAsync(a => a.UserId == userId && a.TaskId == taskId);
         if (!assigned)
-            throw new InvalidOperationException("Tarefa não atribuída a este usuário.");
+        {
+            if (!isManager)
+                throw new InvalidOperationException("Tarefa não atribuída a este usuário.");
+
+            // Gerente pode iniciar em qualquer tarefa; vincula automaticamente
+            // pra ele aparecer nos relatórios/atribuições dessa tarefa.
+            db.TaskAssignments.Add(new TaskAssignment { TaskId = taskId, UserId = userId });
+            await db.SaveChangesAsync();
+        }
 
         var now = DateTime.UtcNow;
         var timer = new ActiveTimer
@@ -81,6 +89,7 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
         };
 
         db.ActiveTimers.Add(timer);
+        AddActionLog(userId, taskId, TimerActionType.Start, now);
         await db.SaveChangesAsync();
 
         await db.Entry(timer).Reference(t => t.Task).LoadAsync();
@@ -100,6 +109,7 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
 
         timer.AccumulatedSeconds = CalculateElapsed(timer);
         timer.State = TimerState.Paused;
+        AddActionLog(userId, timer.TaskId, TimerActionType.Pause, DateTime.UtcNow);
         await db.SaveChangesAsync();
 
         Current = ToSnapshot(timer);
@@ -118,6 +128,7 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
 
         timer.LastResumedAt = DateTime.UtcNow;
         timer.State = TimerState.Running;
+        AddActionLog(userId, timer.TaskId, TimerActionType.Resume, timer.LastResumedAt);
         await db.SaveChangesAsync();
 
         Current = ToSnapshot(timer);
@@ -146,6 +157,7 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
 
         db.TimeEntries.Add(entry);
         db.ActiveTimers.Remove(timer);
+        AddActionLog(userId, timer.TaskId, TimerActionType.Stop, entry.EndedAt);
         await db.SaveChangesAsync();
 
         Current = null;
@@ -160,6 +172,17 @@ public class TimerService(CronoFlowDbContext db) : ITimerService
 
         var runningSeconds = (long)(DateTime.UtcNow - timer.LastResumedAt).TotalSeconds;
         return timer.AccumulatedSeconds + runningSeconds;
+    }
+
+    private void AddActionLog(int userId, int taskId, TimerActionType actionType, DateTime timestampUtc)
+    {
+        db.TimerActionLogs.Add(new TimerActionLog
+        {
+            UserId = userId,
+            TaskId = taskId,
+            ActionType = actionType,
+            TimestampUtc = timestampUtc
+        });
     }
 
     private TimerSnapshot ToSnapshot(ActiveTimer timer) =>
